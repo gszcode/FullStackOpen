@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import './App.css'
-import Course from './components/Course'
 import Note from './components/Note'
+import { useEffect } from 'react'
+import services from './services/notes'
 
 // const course = [
 //   {
@@ -49,10 +50,14 @@ import Note from './components/Note'
 // ]
 
 // eslint-disable-next-line react/prop-types
-function App({ notes }) {
-  const [notesList, setNotesList] = useState(notes)
+function App() {
+  const [notesList, setNotesList] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+  useEffect(() => {
+    services.getAll().then((state) => setNotesList(state))
+  }, [])
 
   const addNote = (e) => {
     e.preventDefault()
@@ -60,11 +65,10 @@ function App({ notes }) {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      date: new Date().toISOString(),
-      id: notesList.length + 1
+      date: new Date()
     }
 
-    setNotesList(notesList.concat(noteObject))
+    services.create(noteObject).then((state) => setNotesList(state))
     setNewNote('')
   }
 
@@ -75,6 +79,21 @@ function App({ notes }) {
   const noteShow = showAll
     ? notesList
     : notesList.filter((note) => note.important)
+
+  const toggleImportance = (id) => {
+    const note = notesList.find((n) => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+
+    services
+      .update(id, changedNote)
+      .then((state) => {
+        setNotesList(notesList.map((note) => (note.id !== id ? note : state)))
+      })
+      .catch((err) => {
+        alert(`the note ${note.content} was already deleted from server`)
+        setNotesList(notesList.filter((n) => n.id !== id))
+      })
+  }
 
   return (
     <div>
@@ -91,7 +110,11 @@ function App({ notes }) {
       </button>
       <ul>
         {noteShow.map((note) => (
-          <Note key={note.id} note={note} />
+          <Note
+            key={note.id}
+            note={note}
+            toggleImportance={() => toggleImportance(note.id)}
+          />
         ))}
       </ul>
       <form onSubmit={addNote}>

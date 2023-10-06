@@ -1,4 +1,4 @@
-function Persons({ persons }) {
+function Persons({ persons, handleDelete }) {
   return (
     <div>
       {persons.map((person) => (
@@ -6,6 +6,8 @@ function Persons({ persons }) {
           Name: <b key={person.name}>{person.name}</b>
           <br />
           Phone: <b key={person.name}>{person.phone}</b>
+          <br />
+          <button onClick={() => handleDelete(person.id)}>Delete</button>
           <hr />
         </>
       ))}
