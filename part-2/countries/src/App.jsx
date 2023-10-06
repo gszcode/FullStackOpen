@@ -5,6 +5,7 @@ import axios from 'axios'
 function App() {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
+  const [countrie, setCountrie] = useState(null)
 
   useEffect(() => {
     axios
@@ -20,6 +21,17 @@ function App() {
     countrie.name.official.toLowerCase().includes(search.toLowerCase())
   )
 
+  const click = (countrie) => {
+    setCountrie(
+      <>
+        <p>Capital: {countrie.capital}</p>
+        <p>Population: {countrie.population}</p>
+        <h3>Languages</h3>
+        <img src={countrie.flags.png} />
+      </>
+    )
+  }
+
   return (
     <div>
       <p>Find countries:</p> <input value={search} onChange={handleFilter} />
@@ -27,9 +39,15 @@ function App() {
         {search && filter.length > 10 ? (
           <p>Too many matches, specify another filter</p>
         ) : (
+          search &&
           filter.length > 1 &&
-          filter.map((c) => <li key={c.name.official}>{c.name.official}</li>)
+          filter.map((c) => (
+            <li key={c.name.official}>
+              {c.name.official} <button onClick={() => click(c)}>show</button>
+            </li>
+          ))
         )}
+        <div>{countrie}</div>
         {filter.length === 1 &&
           filter.map((c) => (
             <>
