@@ -5,7 +5,7 @@ function Persons({ persons, handleDelete }) {
         <>
           Name: <b key={person.name}>{person.name}</b>
           <br />
-          Phone: <b key={person.name}>{person.phone}</b>
+          Number: <b key={person.number}>{person.number}</b>
           <br />
           <button onClick={() => handleDelete(person.id)}>Delete</button>
           <hr />

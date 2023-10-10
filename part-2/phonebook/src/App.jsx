@@ -6,7 +6,7 @@ import services from './services/phone'
 
 const initialState = {
   name: '',
-  phone: ''
+  number: ''
 }
 
 function App() {

@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 const PORT = 3001
 
@@ -28,6 +29,7 @@ let persons = [
 
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(cors())
 
 let accessCount = 0
 app.get('/api/persons', (req, res) => {

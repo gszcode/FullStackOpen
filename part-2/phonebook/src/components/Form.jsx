@@ -5,8 +5,8 @@ function Form({ newName, handleChange, handleSubmit }) {
       <div>
         name: <input name="name" value={newName.name} onChange={handleChange} />
         <br />
-        phone:{' '}
-        <input name="phone" value={newName.phone} onChange={handleChange} />
+        number:{' '}
+        <input name="number" value={newName.number} onChange={handleChange} />
       </div>
       <div>
         <button type="submit">add</button>
