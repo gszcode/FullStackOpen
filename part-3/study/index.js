@@ -46,11 +46,11 @@ app.delete('/api/notes/:id', (req, res, next) => {
     .catch((err) => next(err))
 })
 
-app.post('/api/notes', (req, res) => {
+app.post('/api/notes', (req, res, next) => {
   const { content, important } = req.body
 
-  if (!content || !important)
-    return res.status(400).json({ error: 'data missing' })
+  // if (!content || !important)
+  //   return res.status(400).json({ error: 'data missing' })
 
   const note = new Note({
     content,
@@ -58,9 +58,11 @@ app.post('/api/notes', (req, res) => {
     date: new Date()
   })
 
-  note.save().then((result) => {
-    res.json(result)
-  })
+  note
+    .save()
+    .then((result) => result.toJSON())
+    .then((noteSaved) => res.json(noteSaved))
+    .catch((err) => next(err))
 })
 
 app.put('/api/notes/:id', (req, res, next) => {

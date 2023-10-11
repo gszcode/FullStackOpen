@@ -11,6 +11,7 @@ const initialState = {
 
 function App() {
   const [persons, setPersons] = useState([])
+  const [error, setError] = useState('')
   const [newName, setNewName] = useState(initialState)
 
   useEffect(() => {
@@ -20,11 +21,17 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const findPerson = persons.find((person) => person.name === newName.name)
-    if (findPerson)
-      return alert(`${newName.name} is already added to phonebook`)
+    // const findPerson = persons.find((person) => person.name === newName.name)
+    // if (findPerson)
+    //   return alert(`${newName.name} is already added to phonebook`)
 
-    services.create(newName).then((state) => setPersons([...persons, state]))
+    services
+      .create(newName)
+      .then((state) => setPersons([...persons, state]))
+      .catch((err) => {
+        console.log(err)
+        setError(err.response.data.error)
+      })
     setNewName(initialState)
   }
 
@@ -56,7 +63,20 @@ function App() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
       />
-
+      {error && (
+        <span
+          style={{
+            color: 'red',
+            fontSize: '20px',
+            fontWeight: 'bold',
+            background: '#ddd',
+            padding: '10px 15px',
+            display: 'block'
+          }}
+        >
+          {error}
+        </span>
+      )}
       <h2>Numbers</h2>
       <Persons persons={persons} handleDelete={handleDelete} />
     </div>
