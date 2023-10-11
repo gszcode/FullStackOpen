@@ -40,7 +40,7 @@ app.delete('/api/notes/:id', (req, res, next) => {
       if (note) {
         res.status(204).end()
       } else {
-        res.status(404).json({ error: "note doesn't excist" })
+        res.status(404).json({ error: 'note does not exist' })
       }
     })
     .catch((err) => next(err))

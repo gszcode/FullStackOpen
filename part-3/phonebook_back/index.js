@@ -49,7 +49,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
       if (person) {
         res.status(204).end()
       } else {
-        res.status(404).json({ error: "person doesn't exist" })
+        res.status(404).json({ error: 'person doesnt exist' })
       }
     })
     .catch((err) => next(err))
