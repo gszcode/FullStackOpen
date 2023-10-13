@@ -1,9 +1,10 @@
+// ************* PART 03 *************
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const PORT = 3001
 const Note = require('./models/note')
-const handleError = require('./middlewares/handleError')
+const handleError = require('./utils/middleware')
 
 app.use(express.json())
 app.use(cors())
