@@ -13,8 +13,13 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
 
+let MONGODB_URI = process.env.MONGODB_URL
+if (process.env.NODE_ENV === 'test') {
+  MONGODB_URI = process.env.TEST_MONGODB_URI
+}
+
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(MONGODB_URI)
   .then(() => {
     logger.info('Connected to MongoDB')
   })
