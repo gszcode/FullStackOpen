@@ -20,7 +20,16 @@ const allBlogs = async () => {
   return blogs.map((blog) => blog.toJSON())
 }
 
+const nonExistingId = async () => {
+  const note = new Blog({ content: 'willremovethissoon', date: new Date() })
+  await note.save()
+  await note.remove()
+
+  return note._id.toString()
+}
+
 module.exports = {
   initialBlogs,
-  allBlogs
+  allBlogs,
+  nonExistingId
 }
