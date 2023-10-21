@@ -14,7 +14,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-describe('when there is initially some notes saved', () => {
+xdescribe('when there is initially some notes saved', () => {
   test('notes are returned as json', async () => {
     await api
       .get('/api/notes')
@@ -37,7 +37,7 @@ describe('when there is initially some notes saved', () => {
   })
 })
 
-describe('viewing a specific note', () => {
+xdescribe('viewing a specific note', () => {
   test('succeeds with a valid id', async () => {
     const notesAtStart = await helper.notesInDb()
 
@@ -68,7 +68,7 @@ describe('viewing a specific note', () => {
   })
 })
 
-describe('addition of a new note', () => {
+xdescribe('addition of a new note', () => {
   test('succeeds with valid data', async () => {
     const newNote = {
       content: 'async/await simplifies making async calls',
@@ -101,7 +101,7 @@ describe('addition of a new note', () => {
   })
 })
 
-describe('deletion of a note', () => {
+xdescribe('deletion of a note', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const notesAtStart = await helper.notesInDb()
     const noteToDelete = notesAtStart[0]

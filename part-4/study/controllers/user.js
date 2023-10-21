@@ -3,10 +3,10 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
 usersRouter.post('/', async (req, res) => {
-  const { username, name, passwordHash } = req.body
+  const { username, name, password } = req.body
 
   const saltRounds = 10
-  const passwordHashed = await bcrypt.hash(passwordHash, saltRounds)
+  const passwordHashed = await bcrypt.hash(password, saltRounds)
 
   const user = new User({
     username,
@@ -15,7 +15,12 @@ usersRouter.post('/', async (req, res) => {
   })
   const savedUser = await user.save()
 
-  return res.status(204).json(savedUser)
+  return res.status(200).json(savedUser)
+})
+
+usersRouter.get('/', async (req, res) => {
+  const users = await User.find({})
+  return res.json(users)
 })
 
 module.exports = usersRouter
