@@ -65,6 +65,15 @@ function App() {
     services.getAll().then((state) => setNotesList(state))
   }, [])
 
+  useEffect(() => {
+    const loggedUserJson = localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJson) {
+      const user = JSON.parse(loggedUserJson)
+      setUser(user)
+      services.setToken(user.token)
+    }
+  }, [])
+
   const addNote = (e) => {
     e.preventDefault()
 
@@ -95,21 +104,22 @@ function App() {
       .then((state) => {
         setNotesList(notesList.map((note) => (note.id !== id ? note : state)))
       })
-      .catch(() => {
+      .catch((err) => {
         alert(`the note ${note.content} was already deleted from server`)
         setNotesList(notesList.filter((n) => n.id !== id))
       })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
-      setUser(user)
+      const user = await loginService({ username, password })
+      localStorage.setItem('loggedNoteappUser', JSON.stringify(user.token))
+
       setUsername('')
       setPassword('')
-    } catch (error) {
+    } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
@@ -119,23 +129,25 @@ function App() {
 
   const loginForm = () => (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="username"
-        name="username"
-        value={username}
-        onChange={({ target }) => setUsername(target.value)}
-      />
-      <br />
-      <input
-        type="text"
-        placeholder="password"
-        name="password"
-        value={password}
-        onChange={({ target }) => setPassword(target.value)}
-      />
-      <br />
-      <button>Login</button>
+      <div>
+        username
+        <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </div>
+      <div>
+        password
+        <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </div>
+      <button type="submit">login</button>
     </form>
   )
 
@@ -156,13 +168,13 @@ function App() {
       </div> */}
       <h1>Notes</h1>
 
-      <Notification message={errorMessage} />
+      {/* <Notification message={errorMessage} /> */}
 
       {user === null ? (
         loginForm()
       ) : (
         <div>
-          <p>{user.name} logged-in</p>
+          <p>{user.username} logged-in</p>
           {noteForm()}
         </div>
       )}

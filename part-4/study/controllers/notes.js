@@ -30,12 +30,12 @@ notesRouter.post('/', async (request, response) => {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
 
-  const user = await User.findById(body.userId)
+  const user = await User.findById(decoded.id)
   const note = new Note({
     content: body.content,
     important: body.important === undefined ? false : body.important,
     date: new Date(),
-    user: user._id
+    user: user.id
   })
 
   const savedNote = await note.save()
