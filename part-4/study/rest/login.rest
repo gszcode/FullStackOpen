@@ -1,0 +1,8 @@
+post http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkdhYnlzIiwiaWQiOiI2NTM1ZmFlOGJhNjI3YTQwMWE1ZGJkYTciLCJpYXQiOjE2OTgwMzcyMDl9.uTHbnODKVe-gAb7qm0hLpbdSB5eYZYFN_a3mid5ZfWc
+
+{
+ "content": "Desde rest",
+"important": true
+}

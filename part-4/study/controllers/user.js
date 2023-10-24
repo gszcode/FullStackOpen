@@ -6,12 +6,12 @@ usersRouter.post('/', async (req, res) => {
   const { username, name, password } = req.body
 
   const saltRounds = 10
-  const passwordHashed = await bcrypt.hash(password, saltRounds)
+  const passwordHash = await bcrypt.hash(password, saltRounds)
 
   const user = new User({
     username,
     name,
-    passwordHashed
+    passwordHash
   })
   const savedUser = await user.save()
 
@@ -19,7 +19,7 @@ usersRouter.post('/', async (req, res) => {
 })
 
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('notes', { content: 1, date: 1 })
   return res.json(users)
 })
 

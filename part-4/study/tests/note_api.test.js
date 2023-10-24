@@ -40,7 +40,6 @@ xdescribe('when there is initially some notes saved', () => {
 xdescribe('viewing a specific note', () => {
   test('succeeds with a valid id', async () => {
     const notesAtStart = await helper.notesInDb()
-
     const noteToView = notesAtStart[0]
 
     const resultNote = await api
@@ -55,8 +54,6 @@ xdescribe('viewing a specific note', () => {
 
   test('fails with statuscode 404 if note does not exist', async () => {
     const validNonexistingId = await helper.nonExistingId()
-
-    console.log(validNonexistingId)
 
     await api.get(`/api/notes/${validNonexistingId}`).expect(404)
   })
